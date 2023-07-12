@@ -68,3 +68,41 @@ export function uploadImage({ file }) {
     return response.json();
   });
 }
+
+
+
+//Добавила метод ПОСТ для отправления новых данных
+export function methodPost ({token,description, imageUrl}) {
+  return fetch (postsHost, {
+  method: "POST",
+  body: JSON.stringify({ 
+    description,
+    imageUrl,
+  }),
+  headers: {
+    Authorization: token,
+  },
+  })
+  .then((response)=>{
+    if(response.status === 500){
+      throw new Error("Сервер упал");
+    } else if (response.status ===400){
+      throw new Error("Добавьте описание или картинку");
+    } else {
+      return response.json();
+    }
+  })
+  }
+
+export function deletePost ({token,id}) {
+  return fetch (postsHost+ `/${id}`, {
+    method: "DELETE",
+    headers: {
+    Authorization: token,
+  },
+}) .then((response) => {
+  return response.json();
+})
+}
+
+
