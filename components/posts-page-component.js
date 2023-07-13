@@ -1,8 +1,9 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-import { renderUploadImageComponent } from "./upload-image-component.js";
-import { posts, goToPage } from "../index.js";
-import { getList } from "../list-post.js";
+
+import { posts, goToPage, deletePost } from "../index.js";
+import { deleteFetch } from "../api.js";
+// import { getList } from "../list-post.js";
 
 export function renderPostsPageComponent({ appEl }) {
   // TODO: реализовать рендер постов из api
@@ -54,5 +55,15 @@ export function renderPostsPageComponent({ appEl }) {
       });
     });
   }
+
+const deleteButtons = document.querySelectorAll(".delete-button");
+
+for (const deleteButton of deleteButtons) {
+  deleteButton.addEventListener("click", (event) => {
+    event.stopPropagation();
+    const id = deleteButton.dataset.id;
+    deletePost(id);
+  });
 }
 
+}

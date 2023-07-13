@@ -1,4 +1,4 @@
-import { getPosts, methodPost } from "./api.js";
+import { getPosts,deleteFetch, methodPost,fetchPostUser } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
@@ -34,6 +34,19 @@ export const logout = () => {
 /**
  * Включает страницу приложения
  */
+function getApi(){
+return getPosts({ token: getToken() })
+.then((newPosts) => {
+  page = POSTS_PAGE;
+  posts = newPosts;
+  renderApp();
+})
+.catch((error) => {
+  console.error(error);
+  goToPage(POSTS_PAGE);
+});
+}
+
 export const goToPage = (newPage, data) => {
   if (
     [
@@ -53,27 +66,29 @@ export const goToPage = (newPage, data) => {
     if (newPage === POSTS_PAGE) {
       page = LOADING_PAGE;
       renderApp();
-
-      return getPosts({ token: getToken() })
-        .then((newPosts) => {
-          page = POSTS_PAGE;
-          posts = newPosts;
-          renderApp();
-        })
-        .catch((error) => {
-          console.error(error);
-          goToPage(POSTS_PAGE);
-        });
+     return getApi();
+  
     }
 
     if (newPage === USER_POSTS_PAGE) {
       // TODO: реализовать получение постов юзера из API
       console.log("Открываю страницу пользователя: ", data.userId);
   
-      page = USER_POSTS_PAGE;
-      posts = [];
-      return renderApp();
-    }
+      page = LOADING_PAGE;
+      // posts = [];
+      renderApp();
+
+      return fetchPostUser ( data.userId, { token: getToken() } )
+      .then((newPosts) => {
+        page = USER_POSTS_PAGE;
+        posts = newPosts;
+        renderApp();
+      })
+      .catch((error) => {
+        console.error(error);
+      });
+    
+  }
 
     page = newPage;
     renderApp();
@@ -145,5 +160,14 @@ const renderApp = () => {
     });
   }
 };
-
 goToPage(POSTS_PAGE);
+
+export function deletePost (id){
+ if (user) {
+deleteFetch({ token: getToken() },  id)
+ .then((newPosts) => {
+ posts = newPosts;
+ getApi();
+ })
+};
+};
