@@ -1,5 +1,6 @@
 import { getPosts,deleteFetch, methodPost,fetchPostUser } from "./api.js";
 import { renderAddPostPageComponent } from "./components/add-post-page-component.js";
+import { toggleLike, disLike } from "./api.js";
 import { renderAuthPageComponent } from "./components/auth-page-component.js";
 import {
   ADD_POSTS_PAGE,
@@ -171,3 +172,25 @@ deleteFetch({ token: getToken() },  id)
  })
 };
 };
+
+export function putLikes( id ) {
+    toggleLike( id, { token: getToken() })
+    .then(() => {
+      getApi()
+    })
+    .catch((error) => {
+      alert(error.message);
+      goToPage(AUTH_PAGE);
+    });
+};
+
+export function removeLikes( id ) {
+    disLike(id, { token: getToken() })
+    .then(() => {
+      getApi()
+    })
+    .catch((error) => {
+      alert(error.message);
+      goToPage(AUTH_PAGE);
+    });
+}; 

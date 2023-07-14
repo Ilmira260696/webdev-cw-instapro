@@ -126,3 +126,33 @@ export function fetchPostUser( id , { token }) {
       return data.posts;
     });
 }
+
+export const toggleLike = (id, {token})=>{
+  return fetch (`${postsHost}/${id}/like`,{
+    method:"POST",
+    headers: {
+      Authorization: token,
+    },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error("Посты лайкать могут только авторизованные пользователи");
+})
+}
+
+export const disLike = (id, {token})=>{
+  return fetch (`${postsHost}/${id}/dislike`,{
+    method:"POST",
+    headers: {
+      Authorization: token,
+    },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error("Посты лайкать могут только авторизованные пользователи");
+})
+}

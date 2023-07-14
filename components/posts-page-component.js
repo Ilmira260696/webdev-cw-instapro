@@ -1,6 +1,6 @@
 import { USER_POSTS_PAGE } from "../routes.js";
 import { renderHeaderComponent } from "./header-component.js";
-
+import { removeLikes, putLikes } from "../index.js";
 import { posts, goToPage, deletePost } from "../index.js";
 import { deleteFetch } from "../api.js";
 // import { getList } from "../list-post.js";
@@ -23,7 +23,21 @@ export function renderPostsPageComponent({ appEl }) {
     </div>
     <div class="post-image-container">
       <img class="post-image" src=${post.imageUrl}>
-    </div>
+  </div>
+      <div class="post-likes">
+      <button data-id=${post.id} data-liked=${post.isLiked} class="like-button">
+      ${post.isLiked ? `<img src="./assets/images/like-active.svg"></img>`
+      : `<img src="./assets/images/like-not-active.svg"></img>`}
+  </button>
+  <p class="post-likes-text"> Нравится:
+  ${post.likes.length === 0 ? 0 : post.likes.length === 1 ? post.likes[0].name
+    : post.likes[(post.likes.length - 1)].name + ' и еще ' + (post.likes.length - 1)}  
+  </p>
+  </div>
+  <div class="post-block"></div>
+
+
+
     <p class="post-text">
     <span class="user-name">${post.user.name}</span>
     ${post.description}
@@ -65,5 +79,45 @@ for (const deleteButton of deleteButtons) {
     deletePost(id);
   });
 }
+
+// function getLike() {
+// //   const likesButton= document.querySelectorAll('.like-button');
+// //   for (const likeButton of likesButton) {
+// //     likeButton.addEventListener ("click",(event)=>{
+// //       event.stopPropagation();
+// //       const id= likeButton.dataset.id;
+// //       const like= likeButton.dataset.like;
+
+// //       if(like==false){
+// //         putLikes(id);
+// //       } else {
+// //         removeLikes(id);
+// //       }
+// //   })
+// // }
+// // }
+// getLike();
+// }
+function getLikePost() {
+
+  const likesButton = document.querySelectorAll('.like-button');
+  for (const like of likesButton) {
+    like.addEventListener("click", (event) => {
+      event.stopPropagation();
+      const id = like.dataset.id;
+      const liked = like.dataset.liked;
+
+      if (liked == 'false') {
+        putLikes(id);
+      } else {
+        removeLikes(id);
+      }
+
+    })
+  }
+};
+getLikePost();
+
+
 
 }
