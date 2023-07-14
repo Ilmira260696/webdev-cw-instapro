@@ -45,8 +45,6 @@ export function renderPostsPageComponent({ appEl }) {
   <button data-id=${post.id}  class="button delete-button">Удалить</button>
 </li>`;
   }).join("");
-  
- 
  const appHtml = `
               <div class="page-container">
                 <div class="header-container"></div>
@@ -80,24 +78,6 @@ for (const deleteButton of deleteButtons) {
   });
 }
 
-// function getLike() {
-// //   const likesButton= document.querySelectorAll('.like-button');
-// //   for (const likeButton of likesButton) {
-// //     likeButton.addEventListener ("click",(event)=>{
-// //       event.stopPropagation();
-// //       const id= likeButton.dataset.id;
-// //       const like= likeButton.dataset.like;
-
-// //       if(like==false){
-// //         putLikes(id);
-// //       } else {
-// //         removeLikes(id);
-// //       }
-// //   })
-// // }
-// // }
-// getLike();
-// }
 function getLikePost() {
 
   const likesButton = document.querySelectorAll('.like-button');
@@ -117,7 +97,4 @@ function getLikePost() {
   }
 };
 getLikePost();
-
-
-
 }
