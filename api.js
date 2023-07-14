@@ -68,3 +68,91 @@ export function uploadImage({ file }) {
     return response.json();
   });
 }
+
+
+
+//Добавила метод ПОСТ для отправления новых данных
+export function methodPost ({token,description, imageUrl}) {
+  return fetch (postsHost, {
+  method: "POST",
+  body: JSON.stringify({ 
+    description,
+    imageUrl,
+  }),
+  headers: {
+    Authorization: token,
+  },
+  })
+  .then((response)=>{
+    if (response.status === 500) {
+      throw new Error("Сервер сломался");
+    } else if (response.status === 400) {
+      throw new Error("Плохой запрос");
+    } else {
+      return response.json();
+    }
+  })
+
+}
+export function deleteFetch({ token } ,id ) {
+  return fetch(`${postsHost}/${id}`, {
+      method: "DELETE",
+      headers: {
+        Authorization: token,
+      },
+    })
+      .then((response) => {
+        return response.json();
+      })
+}
+
+
+//получаем посты конкретного юзера
+export function fetchPostUser( id , { token }) {
+  return fetch(`${postsHost}/user-posts/${id}`, {
+    method: "GET",
+    headers: {
+      Authorization: token,
+    },
+  })
+    .then((response) => {
+      if (response.status === 401) {
+        throw new Error("Нет авторизации");
+      }
+
+      return response.json();
+    })
+    .then((data) => {
+      return data.posts;
+    });
+}
+
+export const toggleLike = (id, {token})=>{
+  return fetch (`${postsHost}/${id}/like`,{
+    method:"POST",
+    headers: {
+      Authorization: token,
+    },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error("Посты лайкать могут только авторизованные пользователи");
+})
+}
+
+export const disLike = (id, {token})=>{
+  return fetch (`${postsHost}/${id}/dislike`,{
+    method:"POST",
+    headers: {
+      Authorization: token,
+    },
+    })
+    .then((response) => {
+      if (response.status === 200) {
+        return response.json();
+      }
+      throw new Error("Посты лайкать могут только авторизованные пользователи");
+})
+}

@@ -9,7 +9,7 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
       ${
         imageUrl
           ? `
-          <div class="file-upload-image-conrainer">
+          <div class="file-upload-image-container">
             <img class="file-upload-image" src="${imageUrl}">
             <button class="file-upload-remove-button button">Заменить фото</button>
           </div>
@@ -22,9 +22,7 @@ export function renderUploadImageComponent({ element, onImageUrlChange }) {
                   style="display:none"
                 />
                 Выберите фото
-            </label>
-          
-      `
+            </label> `
       }
   </div>
 `;
